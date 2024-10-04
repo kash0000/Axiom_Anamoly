@@ -17,16 +17,16 @@ def get_GET_AUTH_headers():
 # Function to extract required fields and format them as pipe-separated values
 def process_data(data):
     rows = []
-    for record in data.get('root_entity', []):  # Assuming 'root_entity' is the key containing the records
+    for record in data.get('value', []):  # Adjust based on actual key in JSON
         # Extract the required fields from each record
-        instance_date = record.get('Instance_date', '')
-        entity = record.get('entity', '')
-        report_name = record.get('report_name', '')
-        ordinatecodeX = record.get('ordinatecodeX', '')
-        ordinatecodeY = record.get('ordinatecodeY', '')
-        ordinatelabelZ = record.get('ordinatelabelZ', '')
-        amount = record.get('amount', '')
-        
+        instance_date = record.get('root_report_as_of_date', '')
+        entity = record.get('root_entity', '')
+        report_name = record.get('root_report_name', '')
+        ordinatecodeX = record.get('root_ordinatecodex', '')
+        ordinatecodeY = record.get('root_Ordinatecode', '')
+        ordinatelabelZ = record.get('root_ORDINATELABELZ', 'null')  # Use 'null' if None
+        amount = record.get('root_amount', '')
+
         # Combine report_name and ordinatecodes for the required format
         report_combined = f"{report_name}-{ordinatecodeY}-{ordinatecodeX}"
         
@@ -45,12 +45,12 @@ response = requests.get(url, headers=get_GET_AUTH_headers(), verify=False)
 if response.status_code == 200:
     # Parse the JSON response
     data = response.json()
-    
+
     # Process the data to extract and format the required fields
     formatted_data = process_data(data)
     
-    # Write the formatted data to a .dat file
-    with open('output.dat', 'w') as file:
+    # Write the formatted data to a .dat or .txt file
+    with open('output.dat', 'w') as file:  # You can also use 'output.txt' if you prefer
         for line in formatted_data:
             file.write(line + '\n')  # Write each row to the file with a newline
     
