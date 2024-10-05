@@ -18,24 +18,15 @@ def get_GET_AUTH_headers():
 def process_data(data):
     rows = []
     
-    # Debug: Print the full JSON structure
-    print("Full JSON response:", json.dumps(data, indent=4))
-    
-    for record in data.get('value', []):  # Ensure 'value' is the correct key for records
-        # Debug: Print the full record to verify the structure
-        print("Processing record:", record)
-        
-        # Extract the required fields from each record
-        instance_date = record.get('root_report_as_of_date', '')
-        entity = record.get('root_entity', '')
-        report_name = record.get('root_report_name', '')
-        ordinatecodeX = record.get('root_ordinatecodex', '')
-        ordinatecodeY = record.get('root_Ordinatecode', '')
-        ordinatelabelZ = record.get('root_ORDINATELABELZ', 'null')  # Use 'null' if None
-        amount = record.get('root_amount', '')
-
-        # Debug: Print the extracted values
-        print(f"Extracted values - instance_date: {instance_date}, entity: {entity}, report_name: {report_name}, ordinatecodeX: {ordinatecodeX}, ordinatecodeY: {ordinatecodeY}, ordinatelabelZ: {ordinatelabelZ}, amount: {amount}")
+    for record in data.get('value', []):  # Iterate over each record in 'value'
+        # Extract the required fields using double underscores
+        instance_date = record.get('root__report_as_of_date', '')
+        entity = record.get('root__entity', '')
+        report_name = record.get('root__report_name', '')
+        ordinatecodeX = record.get('root__ordinatecodex', '')
+        ordinatecodeY = record.get('root__Ordinatecode', '')
+        ordinatelabelZ = record.get('root__ORDINATELABELZ', 'null')  # Use 'null' if None
+        amount = record.get('root__amount', '')
 
         # Combine report_name and ordinatecodes for the required format
         report_combined = f"{report_name}-{ordinatecodeY}-{ordinatecodeX}"
