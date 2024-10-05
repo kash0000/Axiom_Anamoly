@@ -17,7 +17,14 @@ def get_GET_AUTH_headers():
 # Function to extract required fields and format them as pipe-separated values
 def process_data(data):
     rows = []
-    for record in data.get('value', []):  # Adjust based on actual key in JSON
+    
+    # Debug: Print the full JSON structure
+    print("Full JSON response:", json.dumps(data, indent=4))
+    
+    for record in data.get('value', []):  # Ensure 'value' is the correct key for records
+        # Debug: Print the full record to verify the structure
+        print("Processing record:", record)
+        
         # Extract the required fields from each record
         instance_date = record.get('root_report_as_of_date', '')
         entity = record.get('root_entity', '')
@@ -26,6 +33,9 @@ def process_data(data):
         ordinatecodeY = record.get('root_Ordinatecode', '')
         ordinatelabelZ = record.get('root_ORDINATELABELZ', 'null')  # Use 'null' if None
         amount = record.get('root_amount', '')
+
+        # Debug: Print the extracted values
+        print(f"Extracted values - instance_date: {instance_date}, entity: {entity}, report_name: {report_name}, ordinatecodeX: {ordinatecodeX}, ordinatecodeY: {ordinatecodeY}, ordinatelabelZ: {ordinatelabelZ}, amount: {amount}")
 
         # Combine report_name and ordinatecodes for the required format
         report_combined = f"{report_name}-{ordinatecodeY}-{ordinatecodeX}"
